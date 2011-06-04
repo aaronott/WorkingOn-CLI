@@ -1,0 +1,52 @@
+What is WorkingOn-CLI
+=====================
+WorkingOn-CLI is a *very* simple time tracking tool. I needed to start tracking
+time against certain projects for work and instead of getting an overblown tool
+I decided to build my own.
+
+The features are very sparse here as I didn't need much other than something to
+track the start and end time of my project. The most advanced feature is the 
+ability to print out report of time spent. I don't allow for tracking by project
+only time tracking by task. I don't even add times together if you have the
+exact same task in there twice.
+
+How To
+======
+Because it's a very simple tool, there aren't a whole lot of options to forget
+while using WorkingOn-CLI.
+
+Start a task
+------------
+workingon start "Project name: This is the task I'm starting"
+
+End a task
+----------
+workingon end
+
+Print out current task
+----------------------
+workingon current
+
+Print a report (Not currently functional)
+--------------
+workingon report 12/23/2010 12/30/2010
+
+That's it, nothing more.
+
+Setting up WorkingOn-CLI
+------------------------
+So this is how I have it setup, you can set it up a different way if you choose.
+
+Download (or clone the repo). From the directory you will need to link the file
+a place in your path (/usr/local/bin should work)
+`ln -s /path/to/WorkingOn-CLI/workingon.php /usr/local/bin/workingon`
+
+That's it. The script will keep the flat files in your home directory under a
+directory called .workingon. If you remove these files, you will have no reports
+for that time frame.
+
+Extending
+---------
+The code is straight PHP. No classes at all currently (remember this was built
+quickly to match what I needed). If you would like to extend this or build a
+feature, feel free.
