@@ -45,11 +45,12 @@ switch ($argv[1]) {
     break;
 
   case 'report':
-    if (!isset($argv[3])) {
-      help();
-      exit;
-    }
-    report($argv[2], $argv[3]);
+    // pass all args
+    // shift off the name of the command and report
+    // before we pass the arguments to the function
+    array_shift($argv);
+    array_shift($argv);
+    call_user_func_array('report', $argv);
     break;
 
   case 'current':
@@ -62,10 +63,12 @@ switch ($argv[1]) {
 }
 
 /**
- * Start an activity
+ * Start an activity.
  *
  * Check to see if an activity has started already and end it so we are
  * only doing one thing at at time.
+ *
+ * @see endActivity()
  *
  * @param
  *   The activity string to be stored.
@@ -89,7 +92,7 @@ function startActivity($activity) {
 }
 
 /**
- * end an activity and clean up the tmpfile
+ * End an activity and clean up the tmpfile.
  *
  * Prepare the data to be written to the db and clean up the tmp file
  * prints a status message to the screen.
@@ -207,9 +210,112 @@ function help() {
   echo "\tworkingon current\n";
 }
 
-function report($start = NULL, $end = NULL) {
-  msg('This functionality has not been built yet.', 'warning');
-  exit();
+/**
+ * Build a report from the db files in the dbdir directory and prints it out
+ * to the screen.
+ *
+ * @param
+ *   Start date in the format MM/DD/YYYY or null if you would like to start
+ *   from the very first files
+ *
+ * @param
+ *   End date in the format MM/DD/YYYY or null if you would like everything
+ *   up until the latest date (including today)
+ *
+ */
+function report() {
+  $args = func_get_args();
+  $report = array();
+
+  if($dh = opendir(DBDIR)) {
+    while (FALSE !== ($file = readdir($dh))) {
+      // skip dot files
+      if (preg_match('/^\./', $file)) {
+        continue;
+      }
+
+      /**
+       * We aren't limiting the output currently.
+       */
+      $tasks = file(DBDIR . "/" . $file);
+
+      foreach($tasks as $task) {
+        list($start, $end, $activity) = explode('|', $task, 3);
+
+        $report[] = format_report_line($start, $end, $activity);
+      }
+    }
+  }
+
+  if (sizeof($report > 0)) {
+    printf("\n\n%-10s %-60s %-10s\n", 'Date', 'Activity', 'Duration');
+    echo hr();
+    foreach($report as $line) {
+      echo $line . "\n";
+    }
+    echo hr();
+  }
+  else {
+    echo "No activities found for this timeframe";
+  }
+
+
+  //msg('This functionality has not been built yet.', 'warning');
+  //exit();
+}
+
+function hr() {
+  $line = str_repeat('-', 10);
+  $line .= '+';
+  $line .= str_repeat('-', 60);
+  $line .= '+';
+  $line .= str_repeat('-', 10);
+  $line .= "\n";
+
+  return $line;
+}
+
+/**
+ * Format the report line for easy layout and printing to the screen
+ *
+ * @param
+ *   Start time of the activity in Unix Time
+ *
+ * @param
+ *   End time of the activity in Unix Time
+ *
+ * @param
+ *   Activity
+ */
+function format_report_line($start, $end, $activity) {
+  $duration = calculateTime($start, $end);
+
+  $hour = sprintf("%02d", $duration['hours']);
+  $minute = sprintf("%02d", $duration['minutes']);
+  $second = sprintf("%02d", $duration['seconds']);
+
+  $duration_string = $hour . 'h' . $minute . 'm' . $second . 's';
+
+  return sprintf("%-10s|%-60s|%-10s", date("m/d/Y", $start), trim($activity), $duration_string);
+}
+
+/**
+ * Simply checks the date that is passed to it, if it's valid
+ * return the date without slashes
+ *
+ * @param
+ *   Date in the format MM/DD/YYYY
+ */
+function filedate_from_date($date) {
+
+  if($date) {
+    list($month, $day, $year) = explode('/', $date);
+    if(checkdate($month, $day, $year)) {
+      return $year . $month . $day;
+    }
+  }
+
+  return FALSE;
 }
 
 /**

@@ -27,9 +27,11 @@ Print out current task
 ----------------------
 workingon current
 
-Print a report (Not currently functional)
+Print a report 
 --------------
-workingon report 12/23/2010 12/30/2010
+workingon report
+  Currently prints a report based on ALL dates. Limiting by date will be in
+  the next version.
 
 That's it, nothing more.
 
