@@ -20,14 +20,14 @@ if (file_exists(DBDIR)) {
 else {
   if (!mkdir(DBDIR)) {
     echo "Unable to make the data directory at " . DBDIR . " please create
-      this directory and run this again.";
+      this directory and run this again.\n";
     exit;
   }
 }
 
 // make sure we can write to the db_file
 if (!touch($db_file)) {
-    echo "Unable to write to the db file: " . $db_file;
+    echo "Unable to write to the db file: " . $db_file . "\n";
     exit;
 }
 
@@ -130,7 +130,7 @@ function currentActivity() {
   global $tmpfile;
 
   if(!file_exists($tmpfile)) {
-    echo "Nothing";
+    echo "Nothing\n";
     exit;
   }
   $line = file_get_contents($tmpfile);
@@ -139,7 +139,7 @@ function currentActivity() {
 
   $date = date("H:i:s",$time);
 
-  printf("%s since %s", $activity, $date);
+  printf("%s since %s\n", $activity, $date);
 }
 
 /**
@@ -242,10 +242,13 @@ function report() {
       foreach($tasks as $task) {
         list($start, $end, $activity) = explode('|', $task, 3);
 
-        $report[] = format_report_line($start, $end, $activity);
+        $report[$start] = format_report_line($start, $end, $activity);
       }
     }
   }
+
+  // let's sort the report to make things easier to find
+  ksort($report);
 
   if (sizeof($report > 0)) {
     printf("\n\n%-10s %-60s %-10s\n", 'Date', 'Activity', 'Duration');
@@ -256,7 +259,7 @@ function report() {
     echo hr();
   }
   else {
-    echo "No activities found for this timeframe";
+    echo "No activities found for this timeframe\n";
   }
 
 
