@@ -137,9 +137,12 @@ function currentActivity() {
 
   list($time, $activity) = explode('|', $line, 2);
 
-  $date = date("H:i:s",$time);
+  $end = mktime();
+  $t = calculateTime($time, $end);
 
-  printf("%s since %s\n", $activity, $date);
+  $elapsed = "[" . $t['hours'] . "h" . $t['minutes'] . "m]";
+
+  printf("%s since %s %s\n", $activity, $date, $elapsed);
 }
 
 /**
