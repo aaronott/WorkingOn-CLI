@@ -136,7 +136,7 @@ function currentActivity() {
   $line = file_get_contents($tmpfile);
 
   list($time, $activity) = explode('|', $line, 2);
-
+  $date = date("H:i:s",$time);
   $end = mktime();
   $t = calculateTime($time, $end);
 
