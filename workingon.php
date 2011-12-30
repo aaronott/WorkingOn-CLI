@@ -1,7 +1,18 @@
 #!/usr/bin/env php
 <?php
-define('DBDIR', $_SERVER['HOME'] . '/.workingon');
+// This is the directory where your data files will be stored. You should make 
+// sure that the directory is actually writable to you and will work for you. 
+// It should be possible to set this directory to a dropbox (or the like) so 
+// you can keep in sync across multiple devices.
+define('DBDIR',  $_SERVER['HOME'] . '/.workingon');
 
+
+// PHP throws some errors relating to date if you don't have your timezone set 
+// correctly.
+//error_reporting();
+//ini_set('display_errors', '1');
+
+// the rest of this should just work without too much worrying.
 $db_file = DBDIR . '/' . date('Ymd') . '_workingon.log';
 $tmpfile = DBDIR . '/.tmpwo';
 
