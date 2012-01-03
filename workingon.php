@@ -284,9 +284,9 @@ function report() {
 function hr() {
   $line = str_repeat('-', 10);
   $line .= '+';
-  $line .= str_repeat('-', 60);
+  $line .= str_repeat('-', 58);
   $line .= '+';
-  $line .= str_repeat('-', 10);
+  $line .= str_repeat('-', 9);
   $line .= "\n";
 
   return $line;
@@ -313,7 +313,7 @@ function format_report_line($start, $end, $activity) {
 
   $duration_string = $hour . 'h' . $minute . 'm' . $second . 's';
 
-  return sprintf("%-10s|%-59s|%-10s", date("m/d/Y", $start), trim($activity), $duration_string);
+  return sprintf("%-10s|%-58s|%-9s", date("m/d/Y", $start), trim($activity), $duration_string);
 }
 
 /**
