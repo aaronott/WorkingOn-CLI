@@ -4,7 +4,7 @@
 // sure that the directory is actually writable to you and will work for you. 
 // It should be possible to set this directory to a dropbox (or the like) so 
 // you can keep in sync across multiple devices.
-define('DBDIR',  $_SERVER['HOME'] . '/.workingon');
+define('DBDIR',  $_SERVER['HOME'] . '/Dropbox/.workingon');
 
 
 // PHP throws some errors relating to date if you don't have your timezone set 
@@ -313,7 +313,7 @@ function format_report_line($start, $end, $activity) {
 
   $duration_string = $hour . 'h' . $minute . 'm' . $second . 's';
 
-  return sprintf("%-10s|%-60s|%-10s", date("m/d/Y", $start), trim($activity), $duration_string);
+  return sprintf("%-10s|%-59s|%-10s", date("m/d/Y", $start), trim($activity), $duration_string);
 }
 
 /**
