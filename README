@@ -52,3 +52,22 @@ Extending
 The code is straight PHP. No classes at all currently (remember this was built
 quickly to match what I needed). If you would like to extend this or build a
 feature, feel free.
+
+Helpful reminder
+----------------
+I am using this mostly on my *buntu Desktop and found that it's really easy to
+forget to change what you are currently working on. I have a cron that runs
+every 20 minutes to remind me of what I'm currently working on and it prompts me
+to change my status.
+
+#!/bin/sh
+
+CURRENT=`/usr/local/bin/workingon current`
+
+/usr/bin/notify-send "What are you WorkingOn?" \
+ "Check your time.\n $CURRENT" \
+ -i /usr/share/pixmaps/gnome-set-time.png
+
+
+My cron for running this is as follows:
+*/20 7-17 * * 1-5 DISPLAY=:0.0 /usr/local/bin/reminder.sh
