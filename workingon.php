@@ -347,3 +347,4 @@ function filedate_from_date($date) {
 function msg($msg, $type = 'success') {
   printf("%-60s [%s]\n", $msg, $type);
 }
+
